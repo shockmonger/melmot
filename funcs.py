@@ -55,6 +55,14 @@ def qom(stri):
     qomval = numpy.sqrt(numpy.square(df).sum(axis =1))
     return(qomval)
 
+def qomnew(stri):
+    fil = basefile+'data/normdatadump/'+stri+'.csv'
+    df1=pd.read_table(fil,header=None)
+    df1.columns=colHeads
+    df = df1.iloc[:,2:]
+    qomval = numpy.sqrt(numpy.square(df).sum(axis =1))
+    return(qomval)
+
 def getlhrh(stri):
     lh = makedf(stri)[:,2:4]
     rh = makedf(stri)[:,5:7]

@@ -6,6 +6,8 @@ import numpy, scipy, os, matplotlib, imageio
 import pandas as pd
 from scipy.optimize import curve_fit
 from sklearn.preprocessing import scale
+from scipy.spatial import distance
+
 
 import matplotlib.pyplot as plt
 matplotlib.style.use('ggplot')
@@ -33,6 +35,9 @@ for key in allpieces:
 pitches = os.listdir(basefile+'sound/pitch/')
 
 
+participants = pd.read_table('/home/tejaswik/Documents/CurrentProjects/melmot/participants.csv',sep=';')
+
+
 '''Functions'''
 def settostrat(stri,y):
     s ='s'+str(y)
@@ -41,8 +46,8 @@ def settostrat(stri,y):
 
     
 def readfile(stri):
-    fil = basefile+'/normdatadump/'+stri+'.csv'
-    df1=pd.read_table(fil,header=None)
+    fil = basefile+'data/normdatadump/'+stri+'.csv'
+    df1=pd.read_table(fil,header=0)
     df1.columns=colHeads
     return(df1)
 
@@ -80,10 +85,10 @@ def qomnew(stri):
     return(qomval)
 
 def getlhrh(stri):
-    lh = makedf(stri)[:,2:4]
-    rh = makedf(stri)[:,5:7]
-    return(lh,rh)
-    
+    rh = readfile(stri).iloc[:,3:6]
+    lh = readfile(stri).iloc[:,6:9]
+    return{'lh':lh,'rh':rh}
+
 def upsamp(stri):
     y = readfile(stri)
     y = sg.resample(y,600)
@@ -93,7 +98,6 @@ def upsamp(stri):
 
 def ups(array):
     y = sg.resample(array,600)
-#    y = scale(y,axis=0,with_mean=True,with_std=True,copy = True)
     y = pd.DataFrame(y)
     return(y)
 
@@ -102,6 +106,37 @@ def readpitch(stri):
     z = pd.read_csv(fil, sep='   ', engine = 'python',header =0)
     return(z)
     
+def maxminret(stri):
+	qy = qom(stri)
+	return{'max':max(qy),'min':min(qy)}
+
+def handdist(stri):
+	rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,3:6])
+	lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,6:9])
+	dist = []
+	for i in range(len(rh)):
+		dist.append(distance.euclidean(lh[i],rh[i]))
+	return(dist)
+
+def displrh(stri):
+	rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,3:6])
+	lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,6:9])
+	distlh = []
+	distrh = []
+	for i in range(1,len(lh)):
+		distlh.append(distance.euclidean(lh[i],lh[i-1]))
+		distrh.append(distance.euclidean(rh[i],rh[i-1]))
+	return{'distlh':sum(distlh),'distrh':sum(distrh)}
+
+
+def displyax(stri):
+	r = readfile(stri)['RHZ']	
+	l = readfile(stri)['LHZ']
+	e = 0	
+	for i in range(1,len(l)):
+	    e = e+distance.euclidean(l[i],l[i-1])+distance.euclidean(r[i],r[i-1])
+	return(e)
+
 
 def returnDetails(string):
     split = string.split('_')
@@ -109,6 +144,8 @@ def returnDetails(string):
     melID = split[1]
     typeID = split[2]
     return{'partID':partID, 'melID':melID, 'typeID':typeID}
+
+
 
 class AutoVivification(dict):
     """Implementation of perl's autovivification feature."""
@@ -167,28 +204,22 @@ qomjo,qomvo,qomim,qomsc = ([]for i in range(4))
 fig, ax1 = plt.subplots()
 for i in range(0,len(alljo)):
     qomjo.append(qom(alljo[i]))
-    # ax1.plot(qomjo[i])
 for i in range(0,len(allvo)):
     qomvo.append(qom(allvo[i]))
-    # ax1.plot(qomvo[i])
 for i in range(0,len(allsc)):
     qomsc.append(qom(allsc[i]))
-    # ax1.plot(qomsc[i])
 for i in range(0,len(allim)):
     qomim.append(qom(allim[i]))
-    # ax1.plot(qomim[i])
 
 
 
 '''normvs syn'''
 qomnorm = []
 qomsyn = []
-# fig, ax2 = plt.subplots()
 for i in range(0,len(normMels)):
     qomnorm.append(qom(normMels[i]))
 for i in range(0,len(synMels)):
     qomsyn.append(qom(synMels[i]))
-    # ax2.plot(qomsyn[i])
 
 
 
@@ -197,21 +228,49 @@ qoms1,qoms2,qoms3,qoms4,qoms5,qoms6 = ([]for i in range(6))
 fig, ax = plt.subplots()
 for i in range(0,len(s1)):
     qoms1.append(qom(s1[i]))
-    # ax.plot(qoms1[i])
 for i in range(0,len(s2)):
     qoms2.append(qom(s2[i]))
-    # ax.plot(qoms2[i])
 for i in range(0,len(s3)):
     qoms3.append(qom(s3[i]))
-    # ax.plot(qoms3[i])
 for i in range(0,len(s4)):
     qoms4.append(qom(s4[i]))
-    # ax.plot(qoms4[i])
 for i in range(0,len(s5)):
     qoms5.append(qom(s5[i]))
-    # ax.plot(qoms5[i])
 for i in range(0,len(s6)):
     qoms6.append(qom(s6[i]))
-    # ax.plot(qoms6[i])
+
+
+eachtracing = dict()
+pieces = os.listdir(basefile+'data/normdatadump/')        
+pitches = os.listdir(basefile+'sound/pitch/')
+
+
+
+p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32 = ([] for i in range(32))
+
+def settopiece(stri,y):
+    s ='p'+str(y)
+    eval(s).append(stri)
+    return
+
+for i in range(len(pieces)):
+    pieces[i] = pieces[i][:-4]
+    melID = returnDetails(pieces[i])['melID']
+    settopiece(pieces[i],melID)
+
+
+m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14,m15,m16,m17,m18,m19,m20,m21,m22,m23,m24,m25,m26,m27,m28,m29,m30,m31,m32 = ([] for i in range(32))
+
+for i in range(1,33):
+    stri = 'm'+str(i)
+    pie = 'p'+str(i)
+    for j in range(0,9,1):
+        eval(stri).append(qom(eval(pie)[j]))
+
+
+
+
+
+
 
 

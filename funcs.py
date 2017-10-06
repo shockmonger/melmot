@@ -1,20 +1,40 @@
 
+import funcs
+
 import numpy, scipy, os, matplotlib, imageio
 import pandas as pd
 from scipy.optimize import curve_fit
 from sklearn.preprocessing import scale
+from scipy.spatial import distance
+
 
 import matplotlib.pyplot as plt
 matplotlib.style.use('ggplot')
 import scipy.signal as sg
-
-
 
 basefile = '/home/tejaswik/Documents/CurrentProjects/melmot/'
 colHeads=['id','frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
 
 
 parts = os.listdir(basefile+'data/ind/')
+
+allpieces = {}
+for i in range(0,len(parts),1):
+    folder = basefile+'data/ind/'+parts[i]
+    pieces = os.listdir(folder)
+    allpieces['{0}'.format(parts[i])] = pieces
+
+    
+for key in allpieces:
+    for i in range(0,32,1):
+        allpieces[key][i] = allpieces[key][i][:-4]
+        
+pitches = os.listdir(basefile+'sound/pitch/')
+
+
+participants = pd.read_table('/home/tejaswik/Documents/CurrentProjects/melmot/participants.csv',sep=';')
+
+
 
 
 '''Functions'''
@@ -25,8 +45,8 @@ def settostrat(stri,y):
 
     
 def readfile(stri):
-    fil = basefile+'/normdatadump/'+stri+'.csv'
-    df1=pd.read_table(fil,header=None)
+    fil = basefile+'data/normdatadump/'+stri+'.csv'
+    df1=pd.read_table(fil,header=0)
     df1.columns=colHeads
     return(df1)
 
@@ -64,10 +84,10 @@ def qomnew(stri):
     return(qomval)
 
 def getlhrh(stri):
-    lh = makedf(stri)[:,2:4]
-    rh = makedf(stri)[:,5:7]
-    return(lh,rh)
-    
+    rh = readfile(stri).iloc[:,3:6]
+    lh = readfile(stri).iloc[:,6:9]
+    return{'lh':lh,'rh':rh}
+
 def upsamp(stri):
     y = readfile(stri)
     y = sg.resample(y,600)
@@ -77,7 +97,6 @@ def upsamp(stri):
 
 def ups(array):
     y = sg.resample(array,600)
-#    y = scale(y,axis=0,with_mean=True,with_std=True,copy = True)
     y = pd.DataFrame(y)
     return(y)
 
@@ -86,6 +105,37 @@ def readpitch(stri):
     z = pd.read_csv(fil, sep='   ', engine = 'python',header =0)
     return(z)
     
+def maxminret(stri):
+    qy = qom(stri)
+    return{'max':max(qy),'min':min(qy)}
+
+def handdist(stri):
+    rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,3:6])
+    lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,6:9])
+    dist = []
+    for i in range(len(rh)):
+        dist.append(distance.euclidean(lh[i],rh[i]))
+    return(dist)
+
+def displrh(stri):
+    rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,3:6])
+    lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,6:9])
+    distlh = []
+    distrh = []
+    for i in range(1,len(lh)):
+        distlh.append(distance.euclidean(lh[i],lh[i-1]))
+        distrh.append(distance.euclidean(rh[i],rh[i-1]))
+    return{'distlh':sum(distlh),'distrh':sum(distrh)}
+
+
+def displyax(stri):
+    r = readfile(stri)['RHZ']   
+    l = readfile(stri)['LHZ']
+    e = 0   
+    for i in range(1,len(l)):
+        e = e+distance.euclidean(l[i],l[i-1])+distance.euclidean(r[i],r[i-1])
+    return(e)
+
 
 def returnDetails(string):
     split = string.split('_')
@@ -93,6 +143,8 @@ def returnDetails(string):
     melID = split[1]
     typeID = split[2]
     return{'partID':partID, 'melID':melID, 'typeID':typeID}
+
+
 
 class AutoVivification(dict):
     """Implementation of perl's autovivification feature."""
@@ -102,18 +154,3 @@ class AutoVivification(dict):
         except KeyError:
             value = self[item] = type(self)()
             return value
-
-
-# def readfile(stri):
-#     fil = basefile+'/datadump/'+stri+'.tsv'
-#     df1=pd.read_table(fil,header=None)
-#     df1.columns=colHeads
-#     return(df1)
-
-# def qom(stri):
-#     fil = basefile+'/datadump/'+stri+'.tsv'
-#     df1=pd.read_table(fil,header=None)
-#     df1.columns=colHeads
-#     df = df1.iloc[:,2:]
-#     qomval = numpy.sqrt(numpy.square(df).sum(axis =1))
-#     return(qomval)

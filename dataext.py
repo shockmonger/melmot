@@ -13,8 +13,6 @@ import matplotlib.pyplot as plt
 matplotlib.style.use('ggplot')
 import scipy.signal as sg
 
-
-
 basefile = '/home/tejaswik/Documents/CurrentProjects/melmot/'
 colHeads=['id','frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
 
@@ -36,6 +34,8 @@ pitches = os.listdir(basefile+'sound/pitch/')
 
 
 participants = pd.read_table('/home/tejaswik/Documents/CurrentProjects/melmot/participants.csv',sep=';')
+
+
 
 
 '''Functions'''
@@ -157,6 +157,14 @@ class AutoVivification(dict):
             return value
 
 
+
+# '''send all norm pieces to /data/normdatadump/'''
+# for i in range(0,len(pieces)):
+#     file_name = pieces[i]+'.csv'
+#     y = upsamp(pieces[i])
+#     y.to_csv(file_name,sep='\t')
+
+
 '''Finding all pieces that have MelID bet 1 and 16'''
 normMels = []
 synMels = []
@@ -264,13 +272,9 @@ m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14,m15,m16,m17,m18,m19,m20,m21,m22,m
 for i in range(1,33):
     stri = 'm'+str(i)
     pie = 'p'+str(i)
-    for j in range(0,9,1):
+    for j in range(0,10):
+    	# print(stri, eval(pie)[j])
         eval(stri).append(qom(eval(pie)[j]))
-
-
-
-
-
 
 
 

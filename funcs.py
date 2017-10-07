@@ -1,6 +1,4 @@
 
-import funcs
-
 import numpy, scipy, os, matplotlib, imageio
 import pandas as pd
 from scipy.optimize import curve_fit
@@ -109,6 +107,17 @@ def maxminret(stri):
     qy = qom(stri)
     return{'max':max(qy),'min':min(qy)}
 
+def maxminz(stri):
+    r = readfile(stri)['RHZ']   
+    l = readfile(stri)['LHZ']
+    zmax = max(r)
+    zmin = min(r)
+    if max(l)>max(r):
+        zmax = max(l)
+    if min(l)<min(r):
+        zmin = min(l)
+    return{'zmax':zmax,'zmin':zmin}
+
 def handdist(stri):
     rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,3:6])
     lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,6:9])
@@ -144,6 +153,11 @@ def returnDetails(string):
     typeID = split[2]
     return{'partID':partID, 'melID':melID, 'typeID':typeID}
 
+
+# def velacc(string):
+    
+#     velnet = numpy.diff()
+#     accnet = 
 
 
 class AutoVivification(dict):

@@ -19,6 +19,12 @@ colHeads=['id','frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
 
 parts = os.listdir(basefile+'data/ind/')
 
+pitches = os.listdir(basefile+'sound/pitch/')
+
+participants = pd.read_table('/home/tejaswik/Documents/CurrentProjects/melmot/participants.csv',sep=';')
+
+
+
 allpieces = {}
 for i in range(0,len(parts),1):
     folder = basefile+'data/ind/'+parts[i]
@@ -30,10 +36,6 @@ for key in allpieces:
     for i in range(0,32,1):
         allpieces[key][i] = allpieces[key][i][:-4]
         
-pitches = os.listdir(basefile+'sound/pitch/')
-
-
-participants = pd.read_table('/home/tejaswik/Documents/CurrentProjects/melmot/participants.csv',sep=';')
 
 
 

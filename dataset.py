@@ -49,6 +49,7 @@ pitches = []
 for i in range(1,17,1):
     strings = str(i)+'.txt'
     pitches.append(ups(readpitch(strings)['F0_Hz']))
+
     
 pitch = pd.DataFrame(pitches)
 pitch.columns = ['f0']
@@ -140,3 +141,7 @@ for i in range(len(tracings)):
 for i in range(len(key)):
     contset = pd.DataFrame(zip(key,handstrat,participant,melody,sex,age,score,genre,proc,lz,rz,qomvals,velr,accr,mel,handdistvals))
     contset.columns=cols3
+
+
+avdataset = pd.read_excel('/home/tejaswik/Documents/CurrentProjects/melmot/avdataset.xls')
+avdataset.keys()

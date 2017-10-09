@@ -203,7 +203,6 @@ for i in range(0,len(pieces),1):
 
         
 pitches = []
-fig, ax9= plt.subplots()
 for i in range(1,17,1):
     strings = str(i)+'.txt'
     pitches.append(ups(readpitch(strings)['F0_Hz']))

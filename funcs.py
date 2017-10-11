@@ -11,8 +11,9 @@ matplotlib.style.use('ggplot')
 import scipy.signal as sg
 
 basefile = '/home/tejaswik/Documents/CurrentProjects/melmot/'
-colHeads=['id','frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
+colHeads=['id','RHX','RHY','RHZ','LHX','LHY','LHZ']
 
+colHeads_old=['id','frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
 
 parts = os.listdir(basefile+'data/ind/')
 
@@ -67,23 +68,24 @@ def qomtsv(stri):
 
 def qom(stri):
     fil = basefile+'data/normdatadump/'+stri+'.csv'
-    df1=pd.read_table(fil,header=None)
+    df1=pd.read_table(fil,header=1)
     df1.columns=colHeads
-    df = df1.iloc[:,2:]
+    df = df1.iloc[:,1:]
     qomval = numpy.sqrt(numpy.square(df).sum(axis =1))
     return(qomval)
 
 def qomnew(stri):
     fil = basefile+'data/normdatadump/'+stri+'.csv'
-    df1=pd.read_table(fil,header=None)
+    df1=pd.read_table(fil,header=1)
     df1.columns=colHeads
-    df = df1.iloc[:,2:]
+    df = df1.iloc[:,1:]
     qomval = numpy.sqrt(numpy.square(df).sum(axis =1))
     return(qomval)
 
+
 def getlhrh(stri):
-    rh = readfile(stri).iloc[:,3:6]
-    lh = readfile(stri).iloc[:,6:9]
+    rh = readfile(stri).iloc[:,2:5]
+    lh = readfile(stri).iloc[:,5:8]
     return{'lh':lh,'rh':rh}
 
 def upsamp(stri):
@@ -119,16 +121,16 @@ def maxminz(stri):
     return{'zmax':zmax,'zmin':zmin}
 
 def handdist(stri):
-    rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,3:6])
-    lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,6:9])
+    rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,1:4])
+    lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,4:7])
     dist = []
     for i in range(len(rh)):
         dist.append(distance.euclidean(lh[i],rh[i]))
     return(dist)
 
 def displrh(stri):
-    rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,3:6])
-    lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,6:9])
+    rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,1:4])
+    lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,4:7])
     distlh = []
     distrh = []
     for i in range(1,len(lh)):

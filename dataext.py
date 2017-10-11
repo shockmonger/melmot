@@ -159,11 +159,14 @@ class AutoVivification(dict):
             return value
 
 
+# tracings = os.listdir('/home/tejaswik/Documents/CurrentProjects/melmot/data/datadump//')
+# for i in range(len(tracings)):
+#     tracings[i] = tracings[i][:-4]
 
 # '''send all norm pieces to /data/normdatadump/'''
-# for i in range(0,len(pieces)):
-#     file_name = pieces[i]+'.csv'
-#     y = upsamp(pieces[i])
+# for i in range(0,len(tracings)):
+#     file_name = tracings[i]+'.csv'
+#     y = upsamp(tracings[i])
 #     y.to_csv(file_name,sep='\t')
 
 

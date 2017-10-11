@@ -98,6 +98,8 @@ for i in range(len(key)):
     avdataset = pd.DataFrame(zip(key,handstrat,participant,melody,sex,age,score,genre,proc,qommax,qommin,qomav,handdistmax,handdistmin,handdistav,zmax,zmin,distlh,distrh))
     avdataset.columns=cols2
 
+    	
+
 
  # continuous curves dataset
 key,handstrat,participant,melody,sex,age,score,genre,proc,lz,rz,qomvals,velr,accr,mel,handdistvals = ([] for i in range(16))
@@ -143,5 +145,5 @@ for i in range(len(key)):
     contset.columns=cols3
 
 
-avdataset = pd.read_excel('/home/tejaswik/Documents/CurrentProjects/melmot/avdataset.xls')
-avdataset.keys()
+# avdataset = pd.read_excel('/home/tejaswik/Documents/CurrentProjects/melmot/avdataset.xls')
+# avdataset.keys()

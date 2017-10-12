@@ -84,8 +84,8 @@ def qomnew(stri):
 
 
 def getlhrh(stri):
-    rh = readfile(stri).iloc[:,2:5]
-    lh = readfile(stri).iloc[:,5:8]
+    rh = readfile(stri).iloc[:,1:4]
+    lh = readfile(stri).iloc[:,4:7]
     return{'lh':lh,'rh':rh}
 
 def upsamp(stri):
@@ -156,11 +156,8 @@ def returnDetails(string):
     return{'partID':partID, 'melID':melID, 'typeID':typeID}
 
 
-# def velacc(string):
-    
-#     velnet = numpy.diff()
-#     accnet = 
-
+# def vel(string):
+#     for i in range()
 
 class AutoVivification(dict):
     """Implementation of perl's autovivification feature."""

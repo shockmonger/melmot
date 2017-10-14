@@ -144,4 +144,17 @@ for i in range(len(key)):
 
 
 # avdataset = pd.read_excel('/home/tejaswik/Documents/CurrentProjects/melmot/avdataset.xls')
-# avdataset.keys()
+# avdataset.keys
+
+
+dataset.keys()
+melcat = []
+for i in range(len(dataset)): 
+    if int(dataset['melody'][i]) <= 16:
+        melcat.append(int(dataset['melody'][i]))
+    elif int(dataset['melody'][i])>16:
+        melcat.append(int(dataset['melody'][i])-16)
+
+dataset['melcat'] = melcat
+avdataset['melcat'] = melcat
+contset['melcat'] = melcat

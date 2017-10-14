@@ -15,7 +15,7 @@ cols1=['key', 'handstrat', 'participant', 'melody', 'sex', 'age', 'score', 'genr
 for i in range(len(tracings)):
     key.append(i)
     handstrat.append(returnDetails(tracings[i])['typeID'])
-    partic = returnDetails(tracings[i])['partID']
+    partic = int(returnDetails(tracings[i])['partID'])-1
     participant.append(partic)
     melID = returnDetails(tracings[i])['melID']
     melody.append(melID)
@@ -64,7 +64,7 @@ cols2=['key','handstrat','participant','melody','sex','age','score','genre','pro
 for i in range(len(tracings)):
     key.append(i)
     handstrat.append(int(returnDetails(tracings[i])['typeID']))
-    partic = int(returnDetails(tracings[i])['partID'])
+    partic = int(returnDetails(tracings[i])['partID'])-1
     participant.append(partic)
     melID = int(returnDetails(tracings[i])['melID'])
     melody.append(melID)
@@ -107,7 +107,7 @@ cols3=['key','handstrat','participant','melody','sex','age','score','genre','pro
 for i in range(len(tracings)):
     key.append(i)
     handstrat.append(int(returnDetails(tracings[i])['typeID']))
-    partic = int(returnDetails(tracings[i])['partID'])
+    partic = int(returnDetails(tracings[i])['partID'])-1
     participant.append(partic)
     melID = int(returnDetails(tracings[i])['melID'])
     melody.append(melID)

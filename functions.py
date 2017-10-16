@@ -34,14 +34,14 @@ pitches = os.listdir(basefile+'sound/pitch/')
 
 participants = pd.read_table('/home/tejaswik/Documents/CurrentProjects/melmot/participants.csv',sep=';')
 
-tracings = os.listdir('/home/tejaswik/Documents/CurrentProjects/melmot/data/normdatadump/')
-for i in range(len(tracings)):
-    tracings[i] = tracings[i][:-4]
+# tracings = os.listdir('/home/tejaswik/Documents/CurrentProjects/melmot/data/normdatadump/')
+# for i in range(len(tracings)):
+#     tracings[i] = tracings[i][:-4]
 
-for i in range(0,len(tracings)):
-    file_name = tracings[i]+'.csv'
-    y = upsamp(tracings[i])
-    y.to_csv(file_name,sep='\t')
+# for i in range(0,len(tracings)):
+#     file_name = tracings[i]+'.csv'
+#     y = upsamp(tracings[i])
+#     y.to_csv(file_name,sep='\t')
 
 
 
@@ -92,6 +92,13 @@ def qomnew(stri):
     df = df1.iloc[:,1:]
     qomval = numpy.sqrt(numpy.square(df).sum(axis =1))
     return(qomval)
+
+
+def qomlhrh(stri):
+	y = readfile(stri)
+	qomlh = numpy.sqrt(numpy.square(y[['LHX','LHY','LHZ']]).sum(axis =1))
+	qomrh = numpy.sqrt(numpy.square(y[['RHX','RHY','RHZ']]).sum(axis =1))
+	return{'qomlh':numpy.mean(qomlh),'qomrh':numpy.mean(qomrh)}
 
 
 def getlhrh(stri):

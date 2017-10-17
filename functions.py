@@ -156,13 +156,19 @@ def maxminret(stri):
 def maxminz(stri):
     r = readfile(stri)['RHZ']   
     l = readfile(stri)['LHZ']
+    zavl = numpy.mean(l)
+    zavr = numpy.mean(r)
     zmax = max(r)
     zmin = min(r)
+    zav = zavr
+    if zavl>zavr:
+        zav = zavl
     if max(l)>max(r):
         zmax = max(l)
     if min(l)<min(r):
         zmin = min(l)
-    return{'zmax':zmax,'zmin':zmin}
+    return{'zmax':zmax,'zmin':zmin,'zav':zav}    
+
 
 def handdist(stri):
     rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,1:4])

@@ -170,6 +170,7 @@ def maxminz(stri):
     return{'zmax':zmax,'zmin':zmin,'zav':zav}    
 
 
+
 def handdist(stri):
     rh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,1:4])
     lh = pd.DataFrame.as_matrix(readfile(stri).iloc[:,4:7])

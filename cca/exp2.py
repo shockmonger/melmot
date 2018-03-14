@@ -29,7 +29,7 @@ print(np.argwhere(np.isnan(music)))
 
 print(motion.shape, music.shape)
 
-sys.exit() # remove me
+# sys.exit() # remove me
 
 motdata = spatialHistogram(motion, 0)
 musdata = spatialHistogram(music, 0)
@@ -51,7 +51,7 @@ print(cca.x_loadings_)
 print(cca.y_loadings_)
 
 # visualize
-visualize = False
+visualize = True
 if visualize:
     for i in range(0, motc.shape[0], 10):
         for k in range(i, i + 10):

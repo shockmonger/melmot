@@ -60,21 +60,24 @@ def readfile(stri):
     df1.columns=colHeads
     return(df1)
 
-def readtsv(stri):
-    fil = basefile+'data/datadump/'+stri+'.tsv'
-    df1=pd.read_table(fil,header=None)
-    cols=['frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
-    df1.columns=cols
-    return(df1)
+# def readtsv(stri):
+#     fil = basefile+'data/datadump/'+stri+'.tsv'
+#     df1=pd.read_table(fil,header=None)
+#     cols=['frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
+#     df1.columns=cols
+#     return(df1)
 
-def qomtsv(stri):
-    fil = basefile+'data/datadump/'+stri+'.tsv'
-    df1=pd.read_table(fil,header=None)
-    cols=['frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
-    df1.columns=cols
-    df = df1.iloc[:,2:]
-    qomval = numpy.sqrt(numpy.square(df).sum(axis =1))
-    return(qomval)
+# def qomtsv(stri):
+#     fil = basefile+'data/datadump/'+stri+'.tsv'
+#     df1=pd.read_table(fil,header=None)
+
+
+
+#     cols=['frame','time','RHX','RHY','RHZ','LHX','LHY','LHZ']
+#     df1.columns=cols
+#     df = df1.iloc[:,2:]
+#     qomval = numpy.sqrt(numpy.square(df).sum(axis =1))
+#     return(qomval)
 
 
 def qom(stri):

@@ -39,7 +39,7 @@ for i in range(len(tracings)):
         proc.append('norm')
     elif int(melID) >=16:
         proc.append('syn')
-
+        
 for i in range(len(key)):
     dataset = pd.DataFrame(zip(key,handstrat,participant,melody,sex,age,score,genre,proc,qoms,handdists,rz,lz))
     dataset.columns=cols1
